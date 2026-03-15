@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATO Dashboard | Algorithmic Transparency Observatory</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="logo-container">
+                <i class="fa-solid fa-eye logo-icon"></i>
+                <h2>ATO Platform</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-view="dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Real-time Monitor</span>
+                </a>
+                <a href="#" class="nav-item" data-view="bias">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <span>Bias Analytics</span>
+                </a>
+                <a href="#" class="nav-item" data-view="explain">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Explainable AI</span>
+                </a>
+                <a href="#" class="nav-item" data-view="compliance">
+                    <i class="fa-solid fa-file-contract"></i>
+                    <span>Compliance Report</span>
+                </a>
+                <a href="#" class="nav-item" data-view="architectures">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>Model Schematics</span>
+                </a>
+                <a href="#" class="nav-item" data-view="database">
+                    <i class="fa-solid fa-database"></i>
+                    <span>Raw DB Audit</span>
+                </a>
+                <a href="#" class="nav-item" data-view="research">
+                    <i class="fa-solid fa-flask-vial"></i>
+                    <span>Research Lens</span>
+                </a>
+            </nav>
+            <div class="system-status">
+                <div class="status-indicator online"></div>
+                <span>System Online</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="search-bar glass-input">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" list="search-suggestions" placeholder="Search decisions, models, reports...">
+                    <datalist id="search-suggestions">
+                        <option value="HR Recruitment Model v2">
+                        <option value="Credit Risk Model v4">
+                        <option value="Healthcare Triage Model">
+                        <option value="Demographic Parity Report">
+                        <option value="Disparate Impact Analysis">
+                        <option value="GDPR Compliance Log">
+                        <option value="DEC-90B40983">
+                    </datalist>
+                </div>
+                <div class="user-profile">
+                    <div class="notification-bell">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="avatar">
+                        <img src="https://ui-avatars.com/api/?name=Ethics+Admin&background=0D8ABC&color=fff" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div id="views-container">
+                
+                <!-- View: Dashboard / Real-time Monitor -->
+                <section id="view-dashboard" class="view-section active">
+                    <div class="header-section">
+                        <h1>Decision Pipeline Overview</h1>
+                        <p class="subtitle">Real-time monitoring of active AI models across sectors.</p>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card glass-panel">
+                            <div class="icon-wrapper blue">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Active Models</h3>
+                                <p class="value" id="active-models-val">0</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-panel">
+                            <div class="icon-wrapper green">
+                                <i class="fa-solid fa-check-double"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Decisions (24h)</h3>
+                                <p class="value" id="total-decisions-val">24,592</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-panel">
+                            <div class="icon-wrapper orange">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Alerts Triggered</h3>
+                                <p class="value" id="alerts-triggered-val">0</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-panel">
+                            <div class="icon-wrapper purple">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Overall Fairness Score</h3>
+                                <p class="value" id="fairness-score-val">96.4%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-container two-col">
+                        <div class="chart-card glass-panel">
+                            <h3>Decision Throughput (Live)</h3>
+                            <canvas id="throughputChart"></canvas>
+                        </div>
+                        <div class="chart-card glass-panel">
+                            <h3>Recent Flagged Decisions</h3>
+                            <div class="table-container">
+                                <table class="dark-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Model</th>
+                                            <th>Sector</th>
+                                            <th>Flag Reason</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="flagged-decisions-tbody">
+                                        <!-- Populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="research-grid">
+                        <div class="glass-panel research-card">
+                            <h3>Research Flowchart</h3>
+                            <img id="flowchart-preview" src="/assets/flowchart" alt="Research flowchart">
+                        </div>
+                        <div class="glass-panel research-card">
+                            <h3>Live Transparency Report</h3>
+                            <p id="report-generated-at" class="subtitle">Waiting for report...</p>
+                            <div class="report-kpis">
+                                <div>Compliance Score: <strong id="compliance-score-val">-</strong></div>
+                                <div>XAI Coverage: <strong id="xai-coverage-val">-</strong></div>
+                                <div>Disparate Impact Ratio: <strong id="dir-val">-</strong></div>
+                            </div>
+                            <ul id="research-insights-list"></ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Bias Analytics -->
+                <section id="view-bias" class="view-section hidden">
+                    <div class="header-section">
+                        <h1>Bias Detection & Analytics</h1>
+                        <p class="subtitle">Evaluating fairness metrics across demographic attributes.</p>
+                    </div>
+                    
+                    <div class="charts-container two-col">
+                        <div class="chart-card glass-panel">
+                            <h3>Disparate Impact Ratio (by Demographic)</h3>
+                            <canvas id="biasBarChart"></canvas>
+                        </div>
+                        <div class="chart-card glass-panel">
+                            <h3>Demographic Parity Analysis</h3>
+                            <canvas id="demographicParityChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Explainable AI -->
+                <section id="view-explain" class="view-section hidden">
+                    <div class="header-section">
+                        <h1>Explainable AI (XAI) Engine</h1>
+                        <p class="subtitle">Interpretable explanations for complex "black-box" model outcomes.</p>
+                    </div>
+
+                    <div class="controls-bar glass-panel">
+                        <select id="model-select" class="glass-input" style="display:none;">
+                            <option value="all">All Models</option>
+                        </select>
+                        <select id="decision-select" class="glass-input">
+                            <option value="">Fetching live decisions...</option>
+                        </select>
+                        <button class="btn btn-primary" id="btn-analyze-xai">Analyze Decision</button>
+                    </div>
+
+                    <div class="explain-grid">
+                        <div class="chart-card glass-panel feature-importance">
+                            <h3>Feature Importance (SHAP Values)</h3>
+                            <canvas id="shapChart"></canvas>
+                        </div>
+                        <div class="glass-panel text-analysis">
+                            <h3>Algorithmic Explanation Summary</h3>
+                            <div class="explanation-box" id="xai-summary">
+                                Select a decision and click 'Analyze' to generate an interpretable explanation.
+                            </div>
+                            <h3 style="margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">Algorithmic Logic Steps</h3>
+                            <div class="explanation-box" style="background: rgba(0,0,0,0.2);">
+                                <ol id="xai-logic-steps" style="margin: 0; padding-left: 1.2rem; color: #cbd5e1; font-family: monospace;">
+                                    <li style="list-style: none;">Waiting for analysis...</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Compliance Report -->
+                <section id="view-compliance" class="view-section hidden">
+                    <div class="header-section">
+                        <h1>Regulatory Compliance Auditing</h1>
+                        <p class="subtitle">Automated compliance monitoring tools for AI governance.</p>
+                        <button class="btn btn-primary" id="btn-generate-report"><i class="fa-solid fa-file-pdf"></i> Generate Audit Report</button>
+                    </div>
+
+                    <div class="compliance-cards">
+                        <div class="compliance-card glass-panel success">
+                            <div class="icon"><i class="fa-solid fa-circle-check"></i></div>
+                            <div class="info">
+                                <h3>GDPR Art. 22 Compliance</h3>
+                                <p>Right to explanation satisfied for 100% of automated decisions.</p>
+                            </div>
+                        </div>
+                        <div class="compliance-card glass-panel warning">
+                            <div class="icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="info">
+                                <h3>AI Act Risk Assessment</h3>
+                                <p>Recruitment model approaches high-risk boundary. Audit recommended.</p>
+                            </div>
+                        </div>
+                        <div class="compliance-card glass-panel success">
+                            <div class="icon"><i class="fa-solid fa-circle-check"></i></div>
+                            <div class="info">
+                                <h3>ISO/IEC 42001 Standard</h3>
+                                <p>AI Management System controls are functioning nominally.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card glass-panel compliance-log">
+                        <h3>Recent Audit Logs</h3>
+                        <div class="audit-log-terminal" id="audit-log-content">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <div class="chart-card glass-panel compliance-log">
+                        <h3>Generated Governance Report</h3>
+                        <div class="audit-log-terminal" id="generated-report-content">
+                            Press "Generate Audit Report" to create a fresh transparency report.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View: Raw Database Tracking -->
+                <section id="view-database" class="view-section hidden">
+                    <div class="header-section">
+                        <h1>Core SQLite Tracking Database</h1>
+                        <p class="subtitle">Live transparent feed of mathematical decisions and XAI logging.</p>
+                    </div>
+                    <div class="db-table-container glass-panel">
+                        <table class="dark-table">
+                            <thead>
+                                <tr>
+                                    <th>Decision ID</th>
+                                    <th>Model</th>
+                                    <th>Timestamp</th>
+                                    <th>Demographics</th>
+                                    <th>Score</th>
+                                    <th>Outcome</th>
+                                    <th>Top Matrix Driver (XAI)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="raw-db-tbody">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- View: Agent Architectures -->
+                <section id="view-architectures" class="view-section hidden">
+                    <div class="header-section">
+                        <h1>Agent Architectures & Algorithmic Rules</h1>
+                        <p class="subtitle">Deep dive into the internal formulas, weights, and logic each AI agent actively uses.</p>
+                    </div>
+                    <div id="architectures-container" class="architectures-grid">
+                        <!-- Populated via JS -->
+                    </div>
+                </section>
+
+                <section id="view-research" class="view-section hidden">
+                    <div class="header-section">
+                        <h1>Research-Aligned Observatory</h1>
+                        <p class="subtitle">Flowchart execution, governance checks, and evaluation reporting from your abstract.</p>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card glass-panel">
+                            <div class="icon-wrapper blue">
+                                <i class="fa-solid fa-sitemap"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Flow Stages</h3>
+                                <p class="value" id="flow-stage-count">0</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-panel">
+                            <div class="icon-wrapper green">
+                                <i class="fa-solid fa-shield"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Governance Score</h3>
+                                <p class="value" id="governance-score-val">0%</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-panel">
+                            <div class="icon-wrapper orange">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Disparate Impact</h3>
+                                <p class="value" id="disparate-impact-val">0</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-panel">
+                            <div class="icon-wrapper purple">
+                                <i class="fa-solid fa-database"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Collected Records</h3>
+                                <p class="value" id="sector-total-val">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-container two-col">
+                        <div class="chart-card glass-panel">
+                            <h3>Flowchart Stages</h3>
+                            <div id="flowchart-stages-list" class="audit-log-terminal"></div>
+                        </div>
+                        <div class="chart-card glass-panel">
+                            <h3>Governance Checks</h3>
+                            <div id="governance-checks-list" class="audit-log-terminal"></div>
+                        </div>
+                    </div>
+
+                    <div class="charts-container two-col">
+                        <div class="chart-card glass-panel">
+                            <h3>Sector Data Collection</h3>
+                            <div class="table-container">
+                                <table class="dark-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Sector</th>
+                                            <th>Decisions</th>
+                                            <th>Approved</th>
+                                            <th>Rejected</th>
+                                            <th>Rate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sector-collection-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="chart-card glass-panel">
+                            <h3>Evaluation Report Snapshot</h3>
+                            <div id="evaluation-summary-box" class="explanation-box"></div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="hidden">
+        <div class="spinner"></div>
+        <p>Analyzing Model Data...</p>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
